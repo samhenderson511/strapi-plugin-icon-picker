@@ -1,12 +1,7 @@
-/**
- *
- * PluginIcon
- *
- */
+import React from "react";
 
-import React from 'react';
-import { Puzzle } from '@strapi/icons';
+import { Enumeration } from "@strapi/icons";
 
-const PluginIcon = () => <Puzzle />;
-
-export default PluginIcon;
+export function PluginIcon() {
+  return <Enumeration />;
+}

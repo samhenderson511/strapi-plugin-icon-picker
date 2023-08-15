@@ -1,39 +1,20 @@
 {
   "name": "strapi-plugin-icon-picker",
-  "version": "0.0.0",
-  "description": "This is the description of the plugin.",
+  "version": "1.0.0",
+  "description": "Select an icon from a list of SVG assets",
   "strapi": {
     "name": "strapi-plugin-icon-picker",
-    "description": "Description of Strapi Plugin Icon Picker plugin",
+    "description": "List of icons, then pick one",
     "kind": "plugin",
-    "displayName": "Strapi Plugin Icon Picker"
-  },
-  "dependencies": {
-    "@strapi/design-system": "^1.6.3",
-    "@strapi/helper-plugin": "^4.6.0",
-    "@strapi/icons": "^1.6.3",
-    "prop-types": "^15.7.2"
-  },
-  "devDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^5.3.4",
-    "styled-components": "^5.3.6"
+    "displayName": "Icon picker"
   },
   "peerDependencies": {
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "react-router-dom": "^5.3.4",
-    "styled-components": "^5.3.6"
+    "@strapi/strapi": "^4.12.4"
   },
-  "author": {
-    "name": "A Strapi developer"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JonssonWorkwear/strapi-plugin-icon-picker.git"
   },
-  "maintainers": [
-    {
-      "name": "A Strapi developer"
-    }
-  ],
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
     "npm": ">=6.0.0"
