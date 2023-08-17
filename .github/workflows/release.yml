@@ -9,9 +9,10 @@ permissions:
   contents: read
 
 jobs:
-  release:
+  publish-package:
     runs-on: ubuntu-latest
     permissions:
+      packages: write
       contents: write
       issues: write
       pull-requests: write
@@ -22,29 +23,12 @@ jobs:
         with:
           node-version: 18
           registry-url: https://npm.pkg.github.com/
-      - name: Update package.json private field 
-        uses: jossef/action-set-json-field@v2.1
-        with:
-          file: package.json
-          field: private
-          value: true
       - name: Create semantic release
         run: npx semantic-release --branches release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
-  publish:
-    needs: release
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          registry-url: https://npm.pkg.github.com/
-      - run: npm publish
+      - name: Publish package
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
