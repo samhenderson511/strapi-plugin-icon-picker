@@ -2,6 +2,7 @@
   "name": "@JonssonWorkwear/strapi-plugin-icon-picker",
   "version": "1.0.0",
   "description": "Select an icon from a list of SVG assets",
+  "private": true,
   "strapi": {
     "name": "strapi-plugin-icon-picker",
     "description": "List of icons, then pick one",
@@ -17,6 +18,9 @@
   },
   "publishConfig": {
     "@JonssonWorkwear:registry": "https://npm.pkg.github.com"
+  },
+  "release": {
+    "branches": ["release"]
   },
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
