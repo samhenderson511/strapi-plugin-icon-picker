@@ -1,5 +1,5 @@
 {
-  "name": "strapi-plugin-icon-picker",
+  "name": "@JonssonWorkwear/strapi-plugin-icon-picker",
   "version": "1.0.0",
   "description": "Select an icon from a list of SVG assets",
   "strapi": {
