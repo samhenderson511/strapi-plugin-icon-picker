@@ -15,6 +15,9 @@
     "type": "git",
     "url": "https://github.com/JonssonWorkwear/strapi-plugin-icon-picker.git"
   },
+  "publishConfig": {
+    "@JonssonWorkwear:registry": "https://npm.pkg.github.com"
+  },
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
     "npm": ">=6.0.0"
