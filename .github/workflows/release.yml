@@ -3,7 +3,7 @@ name: Release and publish package
 on:
   push:
     branches:
-      - master
+      - release
 
 permissions:
   contents: read
