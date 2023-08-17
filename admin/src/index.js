@@ -1,51 +1,60 @@
-import { prefixPluginTranslations } from '@strapi/helper-plugin';
-import pluginPkg from '../../package.json';
-import pluginId from './pluginId';
-import Initializer from './components/Initializer';
-import PluginIcon from './components/PluginIcon';
+import React from "react";
 
-const name = pluginPkg.strapi.name;
+import { PluginIcon } from "./components/PluginIcon";
 
 export default {
   register(app) {
-    app.addMenuLink({
-      to: `/plugins/${pluginId}`,
+    app.customFields.register({
+      name: "IconPicker",
+      pluginId: "icon-picker",
+      type: "text",
       icon: PluginIcon,
       intlLabel: {
-        id: `${pluginId}.plugin.name`,
-        defaultMessage: name,
+        id: "icon-picker.label",
+        defaultMessage: "Icon picker",
       },
-      Component: async () => {
-        const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
-
-        return component;
+      intlDescription: {
+        id: "icon-picker.description",
+        defaultMessage: "List of icons, then pick one",
       },
-      permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
-      ],
-    });
-    app.registerPlugin({
-      id: pluginId,
-      initializer: Initializer,
-      isReady: false,
-      name,
+      components: {
+        Input: async () => import("./components/IconPicker"),
+      },
+      options: {
+        advanced: [
+          {
+            sectionTitle: {
+              id: "icon-picker.settings",
+              defaultMessage: "Settings",
+            },
+            items: [
+              {
+                name: "required",
+                type: "checkbox",
+                intlLabel: {
+                  id: "icon-picker.required.label",
+                  defaultMessage: "Required field",
+                },
+                description: {
+                  id: "icon-picker.required.description",
+                  defaultMessage:
+                    "You won't be able to create an entry if this field is empty",
+                },
+              },
+            ],
+          },
+        ],
+      },
     });
   },
 
-  bootstrap(app) {},
   async registerTrads({ locales }) {
     const importedTrads = await Promise.all(
       locales.map((locale) => {
-        return import(
-          /* webpackChunkName: "translation-[request]" */ `./translations/${locale}.json`
-        )
+        return import(`./translations/${locale}.json`)
           .then(({ default: data }) => {
             return {
-              data: prefixPluginTranslations(data, pluginId),
+              data: data,
               locale,
             };
           })

@@ -1,0 +1,36 @@
+name: Release and publish package
+
+on:
+  push:
+    branches:
+      - release
+
+permissions:
+  contents: read
+
+jobs:
+  publish-package:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+      issues: write
+      pull-requests: write 
+      id-token: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+      - name: Verify the integrity of signatures 
+        run: npm audit signatures
+      - name: Release
+        run: npx semantic-release --branches release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

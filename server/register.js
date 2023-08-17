@@ -1,5 +1,9 @@
-'use strict';
+"use strict";
 
 module.exports = ({ strapi }) => {
-  // register phase
+  strapi.customFields.register({
+    name: "IconPicker",
+    plugin: "icon-picker",
+    type: "text",
+  });
 };

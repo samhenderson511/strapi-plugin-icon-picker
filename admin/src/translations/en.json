@@ -1,1 +1,15 @@
-{}
+{
+  "icon-picker.label": "Icon picker",
+  "icon-picker.description": "List of icons, then pick one",
+  "icon-picker.settings": "Settings",
+  "icon-picker.required.label": "Required field",
+  "icon-picker.required.description": "You won't be able to create an entry if this field is empty",
+  "icon-picker.search.placeholder": "Search for an icon",
+  "icon-picker.search.placeholder.label": "Search for an icon",
+  "icon-picker.search.clear.label": "Clear search",
+  "icon-picker.search.button.label": "Search icon button",
+  "icon-picker.remove.tooltip": "Remove the selected icon",
+  "icon-picker.remove.button": "Remove the selected icon button",
+  "icon-picker.icon.label": "Select {icon} icon",
+  "icon-picker.emptyState.label": "No icon found"
+}
