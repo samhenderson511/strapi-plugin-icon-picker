@@ -19,7 +19,9 @@
     "@JonssonWorkwear:registry": "https://npm.pkg.github.com"
   },
   "release": {
-    "branches": ["release"]
+    "branches": [
+      "release"
+    ]
   },
   "engines": {
     "node": ">=16.0.0 <=20.x.x",
