@@ -1,5 +1,5 @@
 {
-  "name": "@jonssonworkwear/strapi-plugin-icon-picker",
+  "name": "@samhenderson511/strapi-plugin-icon-picker",
   "version": "1.0.0",
   "description": "Select an icon from a list of SVG assets",
   "strapi": {
@@ -9,7 +9,10 @@
     "displayName": "Icon picker"
   },
   "peerDependencies": {
-    "@strapi/strapi": "^4.12.5"
+    "@strapi/strapi": "^4.24.1"
+  },
+  "scripts": {
+    "build": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -33,5 +36,6 @@
     "node": ">=16.0.0 <=20.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "packageManager": "yarn@4.2.1"
 }
