@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 
 import {
   Box,
+  Button,
   Field,
   FieldError,
   FieldHint,
   FieldInput,
   FieldLabel,
   Flex,
-  Icon,
   IconButton,
   Option,
   Searchbar,
@@ -18,6 +18,7 @@ import {
   VisuallyHidden,
   inputFocusStyle,
 } from "@strapi/design-system";
+
 import { Trash } from "@strapi/icons";
 
 import { useIntl } from "react-intl";
@@ -34,7 +35,9 @@ const IconPickerWrapper = styled(Flex)`
   }
 `;
 
-const IconPick = ({ iconKey, name, onChange, isSelected, ariaLabel }) => {
+const IconPick = ({ iconKey, name, onChange, isSelected, ariaLabel, iconWeight }) => {
+  const Icon = COMPONENT_ICONS[iconKey];
+
   return (
     <Field name={name} required={false}>
       <FieldLabel htmlFor={iconKey} id={`${iconKey}-label`}>
@@ -52,7 +55,9 @@ const IconPick = ({ iconKey, name, onChange, isSelected, ariaLabel }) => {
           {ariaLabel}
         </VisuallyHidden>
         <Flex padding={2} cursor="pointer" hasRadius background={isSelected && "primary200"}>
-          <Icon as={COMPONENT_ICONS[iconKey]} color={isSelected ? "primary600" : "neutral600"} />
+          <Tooltip description={iconKey}>
+            <Icon stroke={iconWeight} />
+          </Tooltip>
         </Flex>
       </FieldLabel>
     </Field>
@@ -113,6 +118,8 @@ const IconPicker = ({
     }
   }, [showSearch]);
 
+  const Icon = COMPONENT_ICONS[value];
+
   return (
     <Field name={name} required={required} id={name} error={error} hint={description}>
       <FieldLabel labelAction={labelAction}>{formatMessage(intlLabel)}</FieldLabel>
@@ -170,22 +177,40 @@ const IconPicker = ({
           </Searchbar>
 
           {value && (
-            <Tooltip
-              description={formatMessage({
-                id: "icon-picker.remove.tooltip",
-                defaultMessage: "Remove the selected icon",
-              })}
-            >
-              <IconButton
+            <>
+              <Button
+                disabled
                 onClick={removeIconSelected}
                 aria-label={formatMessage({
                   id: "icon-picker.remove.button",
                   defaultMessage: "Remove the selected icon button",
                 })}
-                icon={<Trash />}
-                style={{ height: "40px", width: "40px" }}
-              />
-            </Tooltip>
+                size="lg"
+                style={{ height: "40px", gap: "1rem", display: "flex", alignItems: "center" }}
+                variant="secondary"
+                startIcon={<Icon style={{ width: 24, height: 24 }} stroke={iconWeight} />}
+              >
+                {value}
+              </Button>
+              <Tooltip
+                description={formatMessage({
+                  id: "icon-picker.remove.tooltip",
+                  defaultMessage: "Remove the selected icon",
+                })}
+              >
+                <IconButton
+                  onClick={removeIconSelected}
+                  aria-label={formatMessage({
+                    id: "icon-picker.remove.button",
+                    defaultMessage: "Remove the selected icon button",
+                  })}
+                  style={{ height: "40px", width: "40px" }}
+                  variant="secondary"
+                >
+                  <Trash />
+                </IconButton>
+              </Tooltip>
+            </>
           )}
         </Flex>
       </Flex>
@@ -207,6 +232,7 @@ const IconPicker = ({
               iconKey={iconKey}
               name={name}
               onChange={onChange}
+              iconWeight={iconWeight}
               isSelected={iconKey === value}
               ariaLabel={formatMessage(
                 {
@@ -226,6 +252,19 @@ const IconPicker = ({
               })}
             </Typography>
           </Box>
+        )}
+        {icons?.length < Object.keys(COMPONENT_ICONS)?.length && !search && (
+          <Button
+            onClick={() => setIcons(allIcons.slice(0, icons.length + 500))}
+            variant="secondary"
+            size="lg"
+            style={{ width: "100%" }}
+          >
+            {formatMessage({
+              id: "icon-picker.showMore.button",
+              defaultMessage: "Show more",
+            })}
+          </Button>
         )}
       </IconPickerWrapper>
 
