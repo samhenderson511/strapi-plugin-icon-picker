@@ -3,27 +3,28 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Box,
   Field,
+  FieldError,
+  FieldHint,
   FieldInput,
   FieldLabel,
-  FieldHint,
-  FieldError,
   Flex,
   Icon,
   IconButton,
-  inputFocusStyle,
+  Option,
   Searchbar,
+  Select,
   Tooltip,
   Typography,
   VisuallyHidden,
+  inputFocusStyle,
 } from "@strapi/design-system";
-import { Search, Trash } from "@strapi/icons";
+import { Trash } from "@strapi/icons";
 
 import { useIntl } from "react-intl";
 
+import * as COMPONENT_ICONS from "@tabler/icons-react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-
-import { COMPONENT_ICONS } from "./icons";
 
 const IconPickerWrapper = styled(Flex)`
   label {
@@ -50,16 +51,8 @@ const IconPick = ({ iconKey, name, onChange, isSelected, ariaLabel }) => {
           />
           {ariaLabel}
         </VisuallyHidden>
-        <Flex
-          padding={2}
-          cursor="pointer"
-          hasRadius
-          background={isSelected && "primary200"}
-        >
-          <Icon
-            as={COMPONENT_ICONS[iconKey]}
-            color={isSelected ? "primary600" : "neutral600"}
-          />
+        <Flex padding={2} cursor="pointer" hasRadius background={isSelected && "primary200"}>
+          <Icon as={COMPONENT_ICONS[iconKey]} color={isSelected ? "primary600" : "neutral600"} />
         </Flex>
       </FieldLabel>
     </Field>
@@ -88,8 +81,9 @@ const IconPicker = ({
   const [showSearch, setShowSearch] = useState(false);
   const [search, setSearch] = useState("");
   const allIcons = Object.keys(COMPONENT_ICONS);
-  const [icons, setIcons] = useState(allIcons);
-  const searchIconRef = useRef(null);
+  const [iconWeight, setIconWeight] = useState(1.5);
+  const weights = [1.25, 1.5, 1.75, 2];
+  const [icons, setIcons] = useState(allIcons.slice(0, 500));
   const searchBarRef = useRef(null);
 
   const toggleSearch = () => {
@@ -99,16 +93,14 @@ const IconPicker = ({
   const onChangeSearch = ({ target: { value } }) => {
     setSearch(value);
     setIcons(() =>
-      allIcons.filter((icon) =>
-        icon.toLowerCase().includes(value.toLowerCase())
-      )
+      allIcons.filter((icon) => icon.toLowerCase().includes(value.toLowerCase())).slice(0, 500)
     );
   };
 
   const onClearSearch = () => {
     toggleSearch();
     setSearch("");
-    setIcons(allIcons);
+    setIcons(allIcons.slice(0, 500));
   };
 
   const removeIconSelected = () => {
@@ -122,51 +114,61 @@ const IconPicker = ({
   }, [showSearch]);
 
   return (
-    <Field name={name} id={name} error={error} hint={description}>
+    <Field name={name} required={required} id={name} error={error} hint={description}>
+      <FieldLabel labelAction={labelAction}>{formatMessage(intlLabel)}</FieldLabel>
       <Flex justifyContent="space-between" paddingBottom={2}>
-        <FieldLabel labelAction={labelAction} required={required}>
-          {formatMessage(intlLabel)}
-        </FieldLabel>
-        <Flex gap={1}>
-          {showSearch ? (
-            <Searchbar
-              ref={searchBarRef}
-              name="searchbar"
-              size="S"
-              placeholder={formatMessage({
-                id: "icon-picker.search.placeholder",
-                defaultMessage: "Search for an icon",
-              })}
-              onBlur={() => {
-                if (!search) {
-                  toggleSearch();
-                }
-              }}
-              onChange={onChangeSearch}
-              value={search}
-              onClear={onClearSearch}
-              clearLabel={formatMessage({
-                id: "icon-picker.search.clear.label",
-                defaultMessage: "Clear the icon search",
-              })}
-            >
+        <Flex
+          style={{
+            margin: "10px 0 0",
+            alignItems: "flex-end",
+            width: "100%",
+            justifyContent: "stretch",
+          }}
+          gap={1}
+        >
+          <Flex direction="column" gap={1} alignItems="flex-start">
+            <FieldLabel htmlFor="iconWeight" id="iconWeight-label">
               {formatMessage({
-                id: "icon-picker.search.placeholder.label",
-                defaultMessage: "Search for an icon",
+                id: "icon-picker.weight.label",
+                defaultMessage: "Icon weight",
               })}
-            </Searchbar>
-          ) : (
-            <IconButton
-              ref={searchIconRef}
-              onClick={toggleSearch}
-              aria-label={formatMessage({
-                id: "icon-picker.search.button.label",
-                defaultMessage: "Search icon button",
-              })}
-              icon={<Search />}
-              noBorder
-            />
-          )}
+            </FieldLabel>
+            <Select value={iconWeight} onChange={(event) => setIconWeight(parseFloat(event))}>
+              {weights.map((weight) => (
+                <Option key={weight} value={weight}>
+                  {weight} px
+                </Option>
+              ))}
+            </Select>
+          </Flex>
+
+          <Searchbar
+            style={{ width: "100%" }}
+            ref={searchBarRef}
+            name="searchbar"
+            placeholder={formatMessage({
+              id: "icon-picker.search.placeholder",
+              defaultMessage: "Search for an icon",
+            })}
+            onBlur={() => {
+              if (!search) {
+                toggleSearch();
+              }
+            }}
+            onChange={onChangeSearch}
+            value={search}
+            onClear={onClearSearch}
+            clearLabel={formatMessage({
+              id: "icon-picker.search.clear.label",
+              defaultMessage: "Clear the icon search",
+            })}
+          >
+            {formatMessage({
+              id: "icon-picker.search.placeholder.label",
+              defaultMessage: "Search for an icon",
+            })}
+          </Searchbar>
+
           {value && (
             <Tooltip
               description={formatMessage({
@@ -181,7 +183,7 @@ const IconPicker = ({
                   defaultMessage: "Remove the selected icon button",
                 })}
                 icon={<Trash />}
-                noBorder
+                style={{ height: "40px", width: "40px" }}
               />
             </Tooltip>
           )}
@@ -194,7 +196,7 @@ const IconPicker = ({
         hasRadius
         wrap="wrap"
         gap={2}
-        maxHeight="126px"
+        maxHeight="320px"
         overflow="auto"
         textAlign="center"
       >
